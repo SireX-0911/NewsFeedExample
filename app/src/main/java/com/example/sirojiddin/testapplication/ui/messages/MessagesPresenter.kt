@@ -85,10 +85,10 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
                                     messages.addAll(cacheMessages)
                                     view?.updateMessages(messages)
                                 } else {
-                                    databaseManager.deleteFile(file!!)
                                     for (i in cacheMessages.indices) {
                                         databaseManager.deleteMessages(cacheMessages[i])
                                     }
+                                    databaseManager.deleteFile(file!!)
                                     val newFile = File(page, it.body()?.messages!!.hashCode(), it.body()?.messages!!)
                                     databaseManager.insertFile(newFile)
                                     for (i in it.body()!!.messages.indices) {

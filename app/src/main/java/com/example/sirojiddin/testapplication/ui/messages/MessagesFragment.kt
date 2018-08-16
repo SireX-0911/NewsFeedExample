@@ -10,10 +10,9 @@ import android.view.View
 import android.widget.Toast
 import com.example.sirojiddin.testapplication.R
 import com.example.sirojiddin.testapplication.common.BaseFragment
-import com.example.sirojiddin.testapplication.data.db.entity.Message
 import com.example.sirojiddin.testapplication.ui.messages.adapter.MessagesAdapter
 import kotlinx.android.synthetic.main.fragment_messages_layout.*
-import pl.kitek.rvswipetodelete.SwipeToDeleteCallback
+import com.example.sirojiddin.testapplication.utils.SwipeToDeleteCallback
 import javax.inject.Inject
 
 
