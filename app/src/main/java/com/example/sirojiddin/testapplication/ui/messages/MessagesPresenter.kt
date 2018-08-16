@@ -18,7 +18,7 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
 ) : BasePresenterImpl<MessagesContract.View>(view), MessagesContract.Presenter {
 
     private var messagesDisposable: Disposable? = null
-    var messages: ArrayList<Message> = ArrayList()
+    var messages: ArrayList<Any> = ArrayList()
     var file: File? = null
     var page: Int = 0
 
@@ -28,7 +28,7 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
 
         file = databaseManager.getFileById(page)
         if (file != null) {
-            messages = databaseManager.getMessages(file!!.id).messages
+            messages.addAll(databaseManager.getMessages(file!!.id).messages)
             view?.setMessages(messages)
             view?.hideProgress()
         }

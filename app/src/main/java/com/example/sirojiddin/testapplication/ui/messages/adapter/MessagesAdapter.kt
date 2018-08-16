@@ -30,8 +30,8 @@ class MessagesAdapter(val context: Context?) : RecyclerView.Adapter<RecyclerView
         return MessageViewHolder(inflater.inflate(R.layout.item_messages_adapter, parent, false))
     }
 
-    fun setItems(items: ArrayList<Any>) {
-        this.items = items
+    fun setItems(items: ArrayList<Any>?) {
+        this.items = items!!
         items.add(Footer())
         isFooterWorked = false
         notifyDataSetChanged()

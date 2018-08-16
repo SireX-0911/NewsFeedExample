@@ -40,10 +40,17 @@ class MessagesFragment : BaseFragment(), MessagesContract.View {
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(rvMessages)
+        val footerCallback = object :MessagesAdapter.FooterCallback{
+            override fun onLoadMore() {
+                presenter.loadNextItems()
+            }
+
+        }
+        messageAdapter.setFooterCallback(footerCallback)
     }
 
-    override fun setMessages(messages: List<Message>?) {
-        messageAdapter.submitList(messages)
+    override fun setMessages(messages: ArrayList<Any>?) {
+        messageAdapter.setItems(messages)
     }
 
     override fun connectionProblems() {
