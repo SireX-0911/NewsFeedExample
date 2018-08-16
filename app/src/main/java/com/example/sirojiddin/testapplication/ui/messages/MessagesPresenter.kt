@@ -3,7 +3,6 @@ package com.example.sirojiddin.testapplication.ui.messages
 import com.example.sirojiddin.testapplication.common.BasePresenterImpl
 import com.example.sirojiddin.testapplication.data.DatabaseManager
 import com.example.sirojiddin.testapplication.data.db.entity.File
-import com.example.sirojiddin.testapplication.data.db.entity.FileWithMessages
 import com.example.sirojiddin.testapplication.data.network.ApiDatabase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -27,7 +26,7 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
 
         file = databaseManager.getFileById(page)
         if (file != null) {
-            messages.addAll(databaseManager.getMessages(file!!.id).messages)
+            messages.addAll(file!!.messages as ArrayList)
             view?.setMessages(messages)
             view?.hideProgress()
         }
@@ -37,15 +36,13 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
                     if (it.isSuccessful) {
                         if (it.body() != null) {
                             if (file != null) {
-                                if (file!!.hashCode == it.body()!!.messages.hashCode()) {
+                                if (file!!.hashSum == it.body()!!.messages.hashCode()) {
                                     messages.addAll(it.body()!!.messages)
                                     view?.setMessages(messages)
                                 } else {
                                     databaseManager.clearAllTables()
-                                    val newFile = File(page, it.body()?.messages!!.hashCode())
+                                    val newFile = File(page, it.body()?.messages!!.hashCode(), it.body()?.messages!!)
                                     databaseManager.insertFile(newFile)
-                                    val fileWithMessage = FileWithMessages(page, it.body()?.messages!!)
-                                    databaseManager.insertFileWithMessages(fileWithMessage)
                                     for (i in it.body()!!.messages.indices) {
                                         databaseManager.insertMessages(it.body()!!.messages[i])
                                     }
@@ -53,10 +50,8 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
                                     view?.setMessages(messages)
                                 }
                             } else {
-                                val newFile = File(page, it.body()?.messages!!.hashCode())
+                                val newFile = File(page, it.body()?.messages!!.hashCode(), it.body()?.messages!!)
                                 databaseManager.insertFile(newFile)
-                                val fileWithMessage = FileWithMessages(page, it.body()?.messages!!)
-                                databaseManager.insertFileWithMessages(fileWithMessage)
                                 for (i in it.body()!!.messages.indices) {
                                     databaseManager.insertMessages(it.body()!!.messages[i])
                                 }
@@ -85,20 +80,17 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
                         if (it.body() != null) {
                             file = databaseManager.getFileById(page)
                             if (file != null) {
-                                val cacheMessages = databaseManager.getMessages(file!!.id).messages
-                                if (file!!.hashCode == it.body()!!.messages.hashCode()) {
+                                val cacheMessages = file!!.messages as ArrayList
+                                if (file!!.hashSum == it.body()!!.messages.hashCode()) {
                                     messages.addAll(cacheMessages)
                                     view?.updateMessages(messages)
                                 } else {
                                     databaseManager.deleteFile(file!!)
-                                    databaseManager.deleteFileWithMessages(databaseManager.getMessages(file!!.id))
                                     for (i in cacheMessages.indices) {
                                         databaseManager.deleteMessages(cacheMessages[i])
                                     }
-                                    val newFile = File(page, it.body()?.messages!!.hashCode())
+                                    val newFile = File(page, it.body()?.messages!!.hashCode(), it.body()?.messages!!)
                                     databaseManager.insertFile(newFile)
-                                    val fileWithMessage = FileWithMessages(page, it.body()?.messages!!)
-                                    databaseManager.insertFileWithMessages(fileWithMessage)
                                     for (i in it.body()!!.messages.indices) {
                                         databaseManager.insertMessages(it.body()!!.messages[i])
                                     }
@@ -106,10 +98,8 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
                                     view?.updateMessages(messages)
                                 }
                             } else {
-                                val newFile = File(page, it.body()?.messages!!.hashCode())
+                                val newFile = File(page, it.body()?.messages!!.hashCode(), it.body()?.messages!!)
                                 databaseManager.insertFile(newFile)
-                                val fileWithMessage = FileWithMessages(page, it.body()?.messages!!)
-                                databaseManager.insertFileWithMessages(fileWithMessage)
                                 for (i in it.body()!!.messages.indices) {
                                     databaseManager.insertMessages(it.body()!!.messages[i])
                                 }

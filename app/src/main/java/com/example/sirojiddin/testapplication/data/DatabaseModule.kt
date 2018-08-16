@@ -3,7 +3,6 @@ package com.example.sirojiddin.testapplication.data
 import android.app.Application
 import android.arch.persistence.room.Room
 import com.example.sirojiddin.testapplication.data.db.entity.FileDao
-import com.example.sirojiddin.testapplication.data.db.entity.FileWithMessagesDao
 import com.example.sirojiddin.testapplication.data.db.entity.MessageDao
 import dagger.Module
 import dagger.Provides
@@ -14,7 +13,7 @@ internal class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideInvDatabase(context: Application): MyDatabase {
+    fun provideMyDatabase(context: Application): MyDatabase {
         return Room.databaseBuilder(
                 context,
                 MyDatabase::class.java,
@@ -31,12 +30,6 @@ internal class DatabaseModule {
     @Provides
     fun provideFileDao(db: MyDatabase): FileDao {
         return db.fileDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideFileWithMessagesDao(db: MyDatabase): FileWithMessagesDao {
-        return db.fileWithMessagesDao()
     }
 
 }

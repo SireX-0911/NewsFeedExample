@@ -1,6 +1,7 @@
 package com.example.sirojiddin.testapplication.ui.messages
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -30,7 +31,7 @@ class MessagesFragment : BaseFragment(), MessagesContract.View {
         rvMessages.layoutManager = linearLayoutManager
         rvMessages.adapter = messageAdapter
         val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-        dividerItemDecoration.setDrawable(context!!.resources.getDrawable(R.drawable.divider))
+        dividerItemDecoration.setDrawable(context?.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
         rvMessages.addItemDecoration(dividerItemDecoration)
 
         val swipeHandler = object : SwipeToDeleteCallback(context!!){
