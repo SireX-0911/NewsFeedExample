@@ -53,6 +53,11 @@ class MessagesFragment : BaseFragment(), MessagesContract.View {
         messageAdapter.setItems(messages)
     }
 
+    override fun updateMessages(messages: ArrayList<Any>?) {
+        messageAdapter.removeFooter()
+        messageAdapter.setItems(messages)
+    }
+
     override fun connectionProblems() {
         Toast.makeText(activity, "Check internet connection", Toast.LENGTH_SHORT).show()
     }

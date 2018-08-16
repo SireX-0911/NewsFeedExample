@@ -4,7 +4,6 @@ import com.example.sirojiddin.testapplication.common.BasePresenterImpl
 import com.example.sirojiddin.testapplication.data.DatabaseManager
 import com.example.sirojiddin.testapplication.data.db.entity.File
 import com.example.sirojiddin.testapplication.data.db.entity.FileWithMessages
-import com.example.sirojiddin.testapplication.data.db.entity.Message
 import com.example.sirojiddin.testapplication.data.network.ApiDatabase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -89,7 +88,7 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
                                 val cacheMessages = databaseManager.getMessages(file!!.id).messages
                                 if (file!!.hashCode == it.body()!!.messages.hashCode()) {
                                     messages.addAll(cacheMessages)
-                                    view?.setMessages(messages)
+                                    view?.updateMessages(messages)
                                 } else {
                                     databaseManager.deleteFile(file!!)
                                     databaseManager.deleteFileWithMessages(databaseManager.getMessages(file!!.id))
@@ -104,7 +103,7 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
                                         databaseManager.insertMessages(it.body()!!.messages[i])
                                     }
                                     messages.addAll(it.body()!!.messages)
-                                    view?.setMessages(messages)
+                                    view?.updateMessages(messages)
                                 }
                             } else {
                                 val newFile = File(page, it.body()?.messages!!.hashCode())
@@ -115,7 +114,7 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
                                     databaseManager.insertMessages(it.body()!!.messages[i])
                                 }
                                 messages.addAll(it.body()!!.messages)
-                                view?.setMessages(messages)
+                                view?.updateMessages(messages)
                             }
                         }
                         view?.hideProgress()
@@ -132,7 +131,7 @@ class MessagesPresenter @Inject constructor(view: MessagesContract.View?,
 
     override fun removeItem(position: Int?) {
         messages.removeAt(position!!)
-        view?.setMessages(messages)
+        view?.updateMessages(messages)
     }
 
     override fun onDestroy() {

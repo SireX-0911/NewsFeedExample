@@ -54,8 +54,8 @@ class MessagesAdapter(val context: Context?) : RecyclerView.Adapter<RecyclerView
             }
         } else if (holder is FooterViewHolder) {
             if (!isFooterWorked) {
-                holder.bind()
-                items.remove(Footer())
+                footerCallback?.onLoadMore()
+                isFooterWorked = true
             }
         }
     }
@@ -69,18 +69,17 @@ class MessagesAdapter(val context: Context?) : RecyclerView.Adapter<RecyclerView
         return super.getItemViewType(position)
     }
 
+    fun removeFooter() {
+        items.remove(Footer())
+    }
+
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvMessageText: TextView = itemView.tvMessageText
         val ivMessageImage: ImageView = itemView.ivMessageImage
     }
 
     inner class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind() {
-            itemView.setOnClickListener {
-                footerCallback?.onLoadMore()
-                isFooterWorked = true
-            }
-        }
+
     }
 
     interface FooterCallback {

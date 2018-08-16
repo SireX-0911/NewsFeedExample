@@ -17,5 +17,6 @@ interface MessagesContract {
         fun showProgress()
         fun hideProgress()
         fun setMessages(messages: ArrayList<Any>?)
+        fun updateMessages(messages: ArrayList<Any>?)
     }
 }
